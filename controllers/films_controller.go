@@ -9,7 +9,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// berfungsi untuk meng fetch all/select all data dari database
+// berfungsi untuk meng fetch all/select all data dari table films di database
 func FilmsController(c echo.Context) error {
 
 	var films []models.Films
@@ -31,7 +31,6 @@ func FilmsController(c echo.Context) error {
 
 // meng-fetch satu data dari table
 func DetailFilmsController(c echo.Context) error {
-	config.InitDB()
 	var id, _ = strconv.Atoi(c.Param("id"))
 
 	var films models.Films
@@ -68,7 +67,7 @@ func AddFilmsController(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, models.BaseResponse{
 		Message: "Success",
-		Data: films,
+		Data:    films,
 	})
 }
 
@@ -77,23 +76,22 @@ func UpdateFilmsController(c echo.Context) error {
 	var films models.Films
 	var id, _ = strconv.Atoi(c.Param("id"))
 
-	title 		:= c.FormValue("title")
-	year		:= c.FormValue("year")
-	years, _ 	:= strconv.Atoi(year)
-	rating		:= c.FormValue("rating")
-	ratings, _ 	:= strconv.Atoi(rating)
-	produser 	:= c.FormValue("produser")
-	synopsis 	:= c.FormValue("synopsis")
-
+	title := c.FormValue("title")
+	year := c.FormValue("year")
+	years, _ := strconv.Atoi(year)
+	rating := c.FormValue("rating")
+	ratings, _ := strconv.Atoi(rating)
+	produser := c.FormValue("produser")
+	synopsis := c.FormValue("synopsis")
 
 	// konek db dan query data dari table dengan kondisi where id
 	result := config.DB.Find(&films, "id = ?", id)
 	// update data dari form input
-	films.Title 	= title
-	films.Year 		= years
-	films.Rating	= ratings
-	films.Produser 	= produser
-	films.Synopsis 	= synopsis
+	films.Title = title
+	films.Year = years
+	films.Rating = ratings
+	films.Produser = produser
+	films.Synopsis = synopsis
 	// simpan data ke db
 	config.DB.Save(&films)
 
@@ -106,12 +104,12 @@ func UpdateFilmsController(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, models.BaseResponse{
 		Message: "Success",
-		Data: films,
+		Data:    films,
 	})
 }
 
 // fungsi untuk menghapus satu data dari table dengan kondisi where id
-func DeleteFilmsController(c echo.Context) error{
+func DeleteFilmsController(c echo.Context) error {
 	var id, _ = strconv.Atoi(c.Param("id"))
 	var films models.Films
 	// konek db dan query ambil satu data dari table dengan kondisi where id
@@ -127,6 +125,6 @@ func DeleteFilmsController(c echo.Context) error{
 	}
 	return c.JSON(http.StatusOK, models.BaseResponse{
 		Message: "Success",
-		Data: films,
+		Data:    films,
 	})
 }
